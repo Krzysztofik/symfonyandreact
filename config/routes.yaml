@@ -9,3 +9,16 @@ api_products:
     controller: App\Controller\ProductController::index
     methods: GET
 
+app_register:
+    path: /register
+    controller: App\Controller\RegisterController::register
+    methods: POST
+
+login:
+    path: /api/login_check
+    controller: App\Controller\LoginController::login
+
+recipes_add:
+    path: /recipe
+    methods: [POST]
+    controller: App\Controller\RecipeController::addRecipe

@@ -3,14 +3,26 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginController extends AbstractController
 {
-    #[Route('/login', name: 'app_login')]
-    public function index(): Response
+    public function login(Request $request, AuthenticationUtils $authenticationUtils)
     {
-        return $this->render('login.html.twig');
+        $data = json_decode($request->getContent(), true);
+
+        $username = $data['username'];
+        $password = $data['password'];
+
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findOneBy(['username' => $username]);
+
+        if (!$user || !$this->get('security.password_encoder')->isPasswordValid($user, $password)) {
+            throw $this->createNotFoundException('Invalid username or password');
+        }
+
+        // handle successful login, generate JWT token, etc.
     }
 }

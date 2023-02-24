@@ -3,28 +3,7 @@
 {% block title %}Products{% endblock %}
 
 {% block body %}
-    <h1>Products</h1>
-
-    <table>
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Calories</th>
-            <th>Protein</th>
-            <th>Carbohydrates</th>
-            <th>Fat</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for product in products %}
-            <tr>
-                <td>{{ product.name }}</td>
-                <td>{{ product.calories }}</td>
-                <td>{{ product.protein }}</td>
-                <td>{{ product.carbohydrates }}</td>
-                <td>{{ product.fat }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div id="root">
+        <script src="{{ asset('build/app.js') }}"></script>
+    </div>
 {% endblock %}

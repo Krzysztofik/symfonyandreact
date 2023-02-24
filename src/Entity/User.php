@@ -13,8 +13,8 @@ class User
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $roles = null;
+    #[ORM\Column(length: 255)]
+    private ?string $username = null;
 
     #[ORM\Column(length: 255)]
     private ?string $password = null;
@@ -24,14 +24,14 @@ class User
         return $this->id;
     }
 
-    public function getRoles(): ?string
+    public function getUsername(): ?string
     {
-        return $this->roles;
+        return $this->username;
     }
 
-    public function setRoles(?string $roles): self
+    public function setUsername(string $username): self
     {
-        $this->roles = $roles;
+        $this->username = $username;
 
         return $this;
     }
