@@ -3,35 +3,30 @@
 namespace App\Controller;
 
 use App\Entity\Recipe;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\ORM\EntityManagerInterface;
 
 class RecipeController extends AbstractController
 {
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
     /**
-     * @Route("/recipe", name="recipe", methods={"POST"})
+     * @Route("/api/recipes", name="api_recipes")
      */
-    public function register(Request $request): Response
+    public function index(EntityManagerInterface $entityManager): Response
     {
-        $data = json_decode($request->getContent(), true);
+        $recipes = $entityManager->getRepository(Recipe::class)->findAll();
 
-        $recipe = new Recipe();
-        $recipe->setName($data['name']);
-        $recipe->setIngredients($data['ingredients']);
-        $recipe->setCalories($data['calories']);
+        $data = [];
 
-        $this->entityManager->persist($recipe);
-        $this->entityManager->flush();
+        foreach ($recipes as $recipe) {
+            $data[] = [
+                'id' => $recipe->getId(),
+                'name' => $recipe->getName(),
+                'ingredients' => $recipe->getIngredients(),
+                'calories' => $recipe->getCalories(),
+            ];
+        }
 
-        return new Response('Adding new recipe sucessful.', Response::HTTP_OK);
+        return $this->json($data);
     }
 }

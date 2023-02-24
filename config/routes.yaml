@@ -9,6 +9,16 @@ api_products:
     controller: App\Controller\ProductController::index
     methods: GET
 
+api_recipes:
+    path: /api/recipes
+    controller: App\Controller\RecipeController::index
+    methods: GET
+
+api_blog:
+    path: /api/blogs
+    controller: App\Controller\BlogController::index
+    methods: GET
+
 app_register:
     path: /register
     controller: App\Controller\RegisterController::register
@@ -17,8 +27,3 @@ app_register:
 login:
     path: /api/login_check
     controller: App\Controller\LoginController::login
-
-recipes_add:
-    path: /recipe
-    methods: [POST]
-    controller: App\Controller\RecipeController::addRecipe

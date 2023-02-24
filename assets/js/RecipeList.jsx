@@ -1,67 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-function RecipeForm() {
-    const [name, setName] = useState("");
-    const [ingredients, setIngredients] = useState("");
-    const [calories, setCalories] = useState("");
-    const [message, setMessage] = useState("");
+const RecipeList = () => {
+    const [recipes, setRecipes] = useState([]);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        fetch("/recipe", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ name, ingredients, calories }),
-        })
-            .then((response) => {
-                if (response.ok) {
-                    setMessage("Recipe added successfully!");
-                    setName("");
-                    setIngredients("");
-                    setCalories("");
-                } else {
-                    setMessage("Adding recipe failed!");
-                }
+    useEffect(() => {
+        axios.get('http://localhost:8000/api/recipes')
+            .then(response => {
+                setRecipes(response.data);
             })
-            .catch((error) => {
-                console.error(error);
-                setMessage("Adding recipe failed!");
+            .catch(error => {
+                console.log(error);
             });
-    };
+    }, []);
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Name:
-                <input
-                    type="text"
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
-                />
-            </label>
-            <label>
-                Ingredients:
-                <input
-                    type="text"
-                    value={ingredients}
-                    onChange={(event) => setIngredients(event.target.value)}
-                />
-            </label>
-
-            <label>
-                Calories:
-                <input
-                    type="text"
-                    value={calories}
-                    onChange={(event) => setCalories(event.target.value)}
-                />
-            </label>
-            <button type="submit">Add Recipe</button>
-            <p>{message}</p>
-        </form>
+        <div>
+            <h1>Recipe List</h1>
+            <table>
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Ingredients</th>
+                    <th>Calories</th>
+                </tr>
+                </thead>
+                <tbody>
+                {recipes.map(recipe => (
+                    <tr key={recipe.id}>
+                        <td>{recipe.name}</td>
+                        <td>{recipe.ingredients}</td>
+                        <td>{recipe.calories}</td>
+                    </tr>
+                ))}
+                </tbody>
+            </table>
+        </div>
     );
-}
+};
 
-export default RecipeForm;
+export default RecipeList;

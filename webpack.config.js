@@ -72,7 +72,8 @@ Encore
     })
 
 // enables Sass/SCSS support
-//.enableSassLoader()
+    .enableSassLoader()
+    .enablePostCssLoader()
 
 // uncomment if you use TypeScript
 //.enableTypeScriptLoader()
@@ -88,3 +89,13 @@ Encore
 ;
 
 module.exports = Encore.getWebpackConfig();
+
+module.exports = {
+    // ...
+    devServer: {
+        historyApiFallback: true,
+        proxy: {
+            '/api': 'http://localhost:8000',
+        },
+    },
+};
